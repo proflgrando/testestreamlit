@@ -1,8 +1,9 @@
 import streamlit as st
+import requests
 
 # ==================================================
 # PORTFÓLIO DE ALGORITMOS EM PYTHON
-# Exemplo de app com dois temas (Streamlit)
+# App exemplo com três temas (Streamlit)
 # ==================================================
 
 # Configurações da página
@@ -18,7 +19,7 @@ st.write("Este app demonstra exemplos simples de **Python + Streamlit**.")
 # ==================================================
 menu = st.sidebar.radio(
     "Escolha um tema:",
-    ("Decisão e Repetição", "Recursividade")
+    ("Decisão e Repetição", "Recursividade", "Acesso a API")
 )
 
 
@@ -78,4 +79,39 @@ elif menu == "Recursividade":
         - Conceitos aplicados:  
             - **Recursividade** (função chamando ela mesma).  
             - **Decisão** (caso base vs. caso recursivo).  
+        """)
+
+
+# ==================================================
+# TEMA 3 - ACESSO A API
+# ==================================================
+elif menu == "Acesso a API":
+    st.header("Tema 3: Acesso a API")
+
+    st.write("Aqui vamos acessar uma API pública de gatos 🐱 e exibir uma imagem aleatória.")
+
+    if st.button("Buscar Imagem de Gato"):
+        # Faz a requisição para a API
+        url = "https://api.thecatapi.com/v1/images/search"
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            dados = response.json()  # Converte a resposta para JSON
+            imagem_url = dados[0]['url']
+            st.image(imagem_url, caption="Imagem aleatória da API TheCatAPI")
+        else:
+            st.error("Não foi possível acessar a API.")
+
+    # Documentação
+    with st.expander("📄 Documentação do Tema 3"):
+        st.markdown("""
+        **Objetivo:** Demonstrar como consumir uma API em Python.  
+        - Usamos a biblioteca `requests` para fazer uma requisição HTTP.  
+        - API usada: `https://api.thecatapi.com/v1/images/search`.  
+        - O resultado é retornado em formato **JSON**.  
+        - Extraímos a URL da imagem e exibimos com `st.image()`.  
+
+        Conceitos aplicados:
+        - **Acesso a API** (requisições GET).  
+        - **Manipulação de JSON** (converter resposta em dicionário Python).  
         """)
